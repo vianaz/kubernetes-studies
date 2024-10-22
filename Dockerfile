@@ -19,5 +19,7 @@ COPY . .
 ENV PATH="/app/venv/bin:$PATH"
 ENV REDIS_HOST="localhost"
 
+EXPOSE 5000
+
 ENTRYPOINT [ "flask" ]
 CMD [ "run", "--host=0.0.0.0" ]
