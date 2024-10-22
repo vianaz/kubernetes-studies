@@ -1,13 +1,23 @@
-FROM python:3.12 AS base
+# syntax=docker/dockerfile:1
+
+FROM cgr.dev/chainguard/python:latest-dev AS dev
+
 WORKDIR /app
 
-FROM base AS builder
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m venv venv
+ENV PATH="/app/venv/bin:$PATH"
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-FROM base AS final
-COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+FROM cgr.dev/chainguard/python:latest
+
+WORKDIR /app
+
+COPY --from=dev /app/venv /app/venv
 COPY . .
-ENV REDIS_HOST localhost
-ENTRYPOINT [ "python" ]
-CMD [ "-m", "flask", "run", "--host=0.0.0.0" ]
+
+ENV PATH="/app/venv/bin:$PATH"
+ENV REDIS_HOST="localhost"
+
+ENTRYPOINT [ "flask" ]
+CMD [ "run", "--host=0.0.0.0" ]
