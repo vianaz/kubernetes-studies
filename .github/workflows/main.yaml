@@ -85,9 +85,9 @@ jobs:
           sarif-file: sarif.output.json
           summary: true
 
-      - name: Upload scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: sarif.output.json
+      # - name: Upload scan results to GitHub Security tab
+      #   uses: github/codeql-action/upload-sarif@v3
+      #   with:
+      #     sarif_file: sarif.output.json
 
   
