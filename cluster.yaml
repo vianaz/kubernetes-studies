@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/weaveworks/eksctl/main/pkg/apis/eksctl.io/v1alpha5/assets/schema.json
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: k8s-study-cluster
+  region: us-east-1
+  version: "1.31"
+
+managedNodeGroups:
+  - name: k8s-study-cluster-managed
+    instanceTypes: [ "t3.medium" ]
+    spot: true
+    minSize: 1
+    maxSize: 3
+    desiredCapacity: 2
+    volumeSize: 20
+    iam:
+      withAddonPolicies:
+        ebs: true
+        awsLoadBalancerController: true
+        albIngress: true
+    
+addons:
+  - name: vpc-cni
+    version: v1.19.2-eksbuild.1
+  - name: coredns
+    version: v1.11.4-eksbuild.1
+  - name: kube-proxy
+    version: v1.31.3-eksbuild.2
+  - name: aws-ebs-csi-driver
+    version: v1.37.0-eksbuild.1
+  
